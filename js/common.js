@@ -1,4 +1,14 @@
 var g_execed = 0;
+
+if(g_execed == 0){
+	console.log('123')
+	var protocol = window.location.protocol;
+	if (protocol == "http:") {
+		window.location.href = window.location.href.replace("http","https");
+	}
+	g_execed = 1;
+}
+
 window.$claudia = {
 
     throttle: function (func, time) {
@@ -17,27 +27,6 @@ window.$claudia = {
         var images = imgs || document.querySelectorAll('.js-img-fadeIn')
 
         function loaded(event) {
-			if(g_execed == 0){
-				
-				/*console.log('1');
-				imgdx=document.getElementsByClassName('post-cover-img js-img-fadeIn')
-				for(var i=0;i<imgdx.length;i++){
-					console.log(imgdx[i].src)
-					if(imgdx[i].src.indexOf('/blog-1/ida1.png')!=-1){
-						imgdx[i].src='/images/laopo_lingxian.jpg'
-					}
-				}
-				imgdx=document.getElementsByClassName('js-img-fadeIn')
-				for(var i=0;i<imgdx.length;i++){
-					console.log(imgdx[i].src)
-					if(imgdx[i].src.indexOf('/blog-1/ida1.png')!=-1){
-						imgdx[i].src='/images/laopo_lingxian.jpg'
-					}
-				}*/
-				var ishttps = 'https:' == document.location.protocol ? true: false;
-				window.location.href = window.location.href.replace("http","https");
-				g_execed=1;
-			}
             var image = event.currentTarget
 
             image.ontransitionend = function () {
