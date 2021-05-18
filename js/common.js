@@ -1,10 +1,14 @@
 var g_execed = 0;
 
 if(g_execed == 0){
-	console.log('123')
+	//console.log('123');
 	var protocol = window.location.protocol;
 	if (protocol == "http:") {
-		window.location.href = window.location.href.replace("http","https");
+		var cur_url=window.location.href;
+		cur_url=cur_url.substring(5,cur_url.length);
+		cur_url="https:"+cur_url;
+		//console.log(cur_url);
+		window.location.href = cur_url;
 	}
 	g_execed = 1;
 }
