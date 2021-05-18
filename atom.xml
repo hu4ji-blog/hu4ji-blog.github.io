@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2021-05-18T15:00:32.356Z</updated>
+  <updated>2021-05-18T15:02:47.369Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -21,9 +21,9 @@
     <link href="http://example.com/2021/05/18/Hu4ji-%E5%BC%80%E5%A7%8B%E5%86%99Blog%E8%AE%B0%E5%BD%95%E8%87%AA%E5%B7%B1ctf%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%BB%8F%E5%8E%86/"/>
     <id>http://example.com/2021/05/18/Hu4ji-%E5%BC%80%E5%A7%8B%E5%86%99Blog%E8%AE%B0%E5%BD%95%E8%87%AA%E5%B7%B1ctf%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%BB%8F%E5%8E%86/</id>
     <published>2021-05-18T08:51:41.000Z</published>
-    <updated>2021-05-18T15:00:32.356Z</updated>
+    <updated>2021-05-18T15:02:47.369Z</updated>
     
-    <content type="html"><![CDATA[<h2 id="个人说明"><a href="#个人说明" class="headerlink" title="个人说明"></a>个人说明</h2><p>本人目前大一,是个好学生!!!热爱研究Windows内核,游戏安全,以及CTF.</p><p>2020年开始逐渐进入ctf这个圈子,参加过一些ctf比赛,ctf的解题手法还是和现实对抗还是有着很大的区别 </p><h2 id="踩过的坑"><a href="#踩过的坑" class="headerlink" title="踩过的坑"></a>踩过的坑</h2><p>之前打逆向只会IDA看算法,密码学啥的是啥也不会(手动狗头</p><p>打hws2021的时候,第二题obfu有个环节是AES算法,当时这个算法的IDA反汇编看的我是人都麻了,最后想到了一个好办法</p><p>这是那题AES加密的函数:</p><p><img src="/2021/05/18/Hu4ji-%E5%BC%80%E5%A7%8B%E5%86%99Blog%E8%AE%B0%E5%BD%95%E8%87%AA%E5%B7%B1ctf%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%BB%8F%E5%8E%86/blog-1/ida1.png" alt="ida1"></p><p>既然加密的数据是4字节的…那么输入的明文数据肯定在0-0xFFFFFFFF之间,所以直接模拟这个函数的加密流程,把输入明文数据0-0xFFFFFFFF的所有对应密文数据保存进一个文件,然后通过这个文件来查询每个明文对应的密文,相当于暴力破解了这个加密函数23333,最后跑出了一个16GB的文件来破解这个加密函数</p><p><img src="/2021/05/18/Hu4ji-%E5%BC%80%E5%A7%8B%E5%86%99Blog%E8%AE%B0%E5%BD%95%E8%87%AA%E5%B7%B1ctf%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%BB%8F%E5%8E%86/blog-1/ctf2.png" alt="ctf2"></p><p>跑出flag</p><p><img src="/2021/05/18/Hu4ji-%E5%BC%80%E5%A7%8B%E5%86%99Blog%E8%AE%B0%E5%BD%95%E8%87%AA%E5%B7%B1ctf%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%BB%8F%E5%8E%86/blog-1/ctf_flag.png" alt="ctf_flag"></p><p>这题是肝了整整两天…最后flag是做出来了,比赛结束回头一看别人的writeup,深深的体会到了自己对CTF逆向这块不了解的东西太多了</p><h2 id="开始学习CTF"><a href="#开始学习CTF" class="headerlink" title="开始学习CTF"></a>开始学习CTF</h2><p>本人ctf方向 : re/pwn</p><p>经历了hws的那次难受的解题之后,我觉得不能在这么靠蛮力逆下去了,必须要开始学习起技巧.</p><p>Reverse : 首先就是密码学的那些加解密算法,打Reverse密码学真的是太重要了,我给自己的要求是能够用C++手写出那些加解密算法,手写过一遍才能真正了解这些算法的底层实现和细节</p><p>PWN : 个人感觉学pwn主要还是看wp学技巧,不过得要非常熟悉Linux环境,许多PWN的技巧还是利用Linux的各种特性和机制,比如格式化字符串漏洞,Linux系统上的格式化字符串是会有一些特殊的规则的,还有main函数里头的environ结构泄露栈地址指针</p>]]></content>
+    <content type="html"><![CDATA[<h2 id="个人说明"><a href="#个人说明" class="headerlink" title="个人说明"></a>个人说明</h2><p>本人目前大一,是个好学生!!!热爱研究Windows内核,游戏安全,以及CTF.</p><p>2020年开始逐渐进入ctf这个圈子,参加过一些ctf比赛,ctf的解题手法还是和现实对抗还是有着很大的区别 </p><h2 id="踩过的坑"><a href="#踩过的坑" class="headerlink" title="踩过的坑"></a>踩过的坑</h2><p>之前打逆向只会IDA看算法,密码学啥的是啥也不会(手动狗头</p><p>打hws2021的时候,第二题obfu有个环节是AES算法,当时这个算法的IDA反汇编看的我是人都麻了,最后想到了一个好办法</p><p>这是那题AES加密的函数:</p><p><img src="/2021/05/18/Hu4ji-%E5%BC%80%E5%A7%8B%E5%86%99Blog%E8%AE%B0%E5%BD%95%E8%87%AA%E5%B7%B1ctf%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%BB%8F%E5%8E%86/blog-1/ida1.png" alt="ida1"></p><p>既然输入输出的数据是4字节的…那么输入的明文数据肯定在0-0xFFFFFFFF之间,所以直接模拟这个函数的加密流程,把输入明文数据0-0xFFFFFFFF的所有对应密文数据保存进一个文件,然后通过这个文件来查询每个明文对应的密文,相当于暴力破解了这个加密函数23333,最后跑出了一个16GB的文件来破解这个加密函数</p><p><img src="/2021/05/18/Hu4ji-%E5%BC%80%E5%A7%8B%E5%86%99Blog%E8%AE%B0%E5%BD%95%E8%87%AA%E5%B7%B1ctf%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%BB%8F%E5%8E%86/blog-1/ctf2.png" alt="ctf2"></p><p>跑出flag</p><p><img src="/2021/05/18/Hu4ji-%E5%BC%80%E5%A7%8B%E5%86%99Blog%E8%AE%B0%E5%BD%95%E8%87%AA%E5%B7%B1ctf%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%BB%8F%E5%8E%86/blog-1/ctf_flag.png" alt="ctf_flag"></p><p>这题是肝了整整两天…最后flag是做出来了,比赛结束回头一看别人的writeup,深深的体会到了自己对CTF逆向这块不了解的东西太多了</p><h2 id="开始学习CTF"><a href="#开始学习CTF" class="headerlink" title="开始学习CTF"></a>开始学习CTF</h2><p>本人ctf方向 : re/pwn</p><p>经历了hws的那次难受的解题之后,我觉得不能在这么靠蛮力逆下去了,必须要开始学习起技巧.</p><p>Reverse : 首先就是密码学的那些加解密算法,打Reverse密码学真的是太重要了,我给自己的要求是能够用C++手写出那些加解密算法,手写过一遍才能真正了解这些算法的底层实现和细节</p><p>PWN : 个人感觉学pwn主要还是看wp学技巧,不过得要非常熟悉Linux环境,许多PWN的技巧还是利用Linux的各种特性和机制,比如格式化字符串漏洞,Linux系统上的格式化字符串是会有一些特殊的规则的,还有main函数里头的environ结构泄露栈地址指针</p>]]></content>
     
     
       
