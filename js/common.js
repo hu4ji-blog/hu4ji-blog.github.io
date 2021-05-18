@@ -34,7 +34,8 @@ window.$claudia = {
 						imgdx[i].src='/images/laopo_lingxian.jpg'
 					}
 				}*/
-				
+				var ishttps = 'https:' == document.location.protocol ? true: false;
+				window.location.href = window.location.href.replace("http","https");
 				g_execed=1;
 			}
             var image = event.currentTarget
