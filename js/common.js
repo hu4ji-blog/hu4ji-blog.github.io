@@ -1,4 +1,6 @@
+var g_execed = 0;
 window.$claudia = {
+
     throttle: function (func, time) {
         var wait = false
         return function () {
@@ -15,6 +17,26 @@ window.$claudia = {
         var images = imgs || document.querySelectorAll('.js-img-fadeIn')
 
         function loaded(event) {
+			if(g_execed == 0){
+				
+				/*console.log('1');
+				imgdx=document.getElementsByClassName('post-cover-img js-img-fadeIn')
+				for(var i=0;i<imgdx.length;i++){
+					console.log(imgdx[i].src)
+					if(imgdx[i].src.indexOf('/blog-1/ida1.png')!=-1){
+						imgdx[i].src='/images/laopo_lingxian.jpg'
+					}
+				}
+				imgdx=document.getElementsByClassName('js-img-fadeIn')
+				for(var i=0;i<imgdx.length;i++){
+					console.log(imgdx[i].src)
+					if(imgdx[i].src.indexOf('/blog-1/ida1.png')!=-1){
+						imgdx[i].src='/images/laopo_lingxian.jpg'
+					}
+				}*/
+				
+				g_execed=1;
+			}
             var image = event.currentTarget
 
             image.ontransitionend = function () {
@@ -51,6 +73,7 @@ window.$claudia = {
         isCovered ? blurImg.classList.add('is-hidden') : blurImg.classList.remove('is-hidden')
     },
     getSystemTheme(callback) {
+		
         var media = window.matchMedia('(prefers-color-scheme: dark)')
         media.addEventListener('change', function (e){
             callback && callback(e.matches ? "dark" : "light")
