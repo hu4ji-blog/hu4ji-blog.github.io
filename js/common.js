@@ -8,7 +8,11 @@ if(g_execed == 0){
 		cur_url=cur_url.substring(5,cur_url.length);
 		cur_url="https:"+cur_url;
 		//console.log(cur_url);
-		window.location.href = cur_url;
+		/*var xmlhttp = new XMLHttpRequest();
+		xmlhttp.abort();
+		window.stop();
+		window.location.href = cur_url;*/
+
 	}
 	g_execed = 1;
 }
