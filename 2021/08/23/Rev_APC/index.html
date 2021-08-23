@@ -67,11 +67,12 @@ Image回调的限制<img src="media_REVAPC/7746ec19fe4965b30dffe0c3889b2092.png"
 <p>case里面是与驱动通信来加密buf的</p>
 <p>将各个加密函数求出逆运算即可解密flag</p>
 <p>flag : flag{Kmode_Umode_Communication!}</p>
-<p>解密代码:<br>
-#include <iostream><br>
-#include “windows.h”<br>
-#include “intrin.h”</p>
-<pre><code>void re_dec1(PCHAR b1, PCHAR b2) &#123;
+<p>解密代码:</p>
+<pre><code>#include &lt;iostream&gt;
+#include &quot;windows.h&quot;
+#include &quot;intrin.h&quot;
+
+void re_dec1(PCHAR b1, PCHAR b2) &#123;
 	char v9;
 	char v8;
 	for (int i = 0x1F; i &gt;= 0; i--) &#123;
