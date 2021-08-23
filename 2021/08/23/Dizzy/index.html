@@ -1,0 +1,222 @@
+<!DOCTYPE html><html class="appearance-auto" lang="en"><head><meta charset="UTF-8"><title>Hu4ji's blog</title><meta name="description" content="Pwn the world"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
+<!-- Baidu Analytics --><!-- End Baidu Analytics --><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><script src="/js/highlight.pack.js"></script><meta name="description" content="Dizzy
+拿到题目用IDA打开,发现一个超大的main函数
+
+代码很乱,先写个idapython脚本优化一下
+将这种
+
+还有这种指令全都优化了
+
+都优化成这样子
+
+优化之后可读性大大增加
+这里的每一组操作都有个规律
+像这种逻辑的,只有7条指令
+
+而像这种的,只有5条指令
+
+那处理起来就很容易了,先枚举出所有操作块,然后从后往前求逆就行
+我的计算flag方案是idapython生成c代码,复制到c文件里编译执行相应的flag计算代码
+flag: flag{Try_R3vers1ng_W1th_ScR!pt!}
+生成求逆C源码的IDAPYTHON代码:
+import idaapi
+import idautils
+import idc
+
+flog=open('inst.log','a+')
+def logins.."><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">Hu4ji's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center"></p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">Click back to the top</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">Home</a></h3><h3 class="is-inline-block"><a href="/about">About</a></h3><h3 class="is-inline-block"><a href="/archives">Archives</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">Home</a></h3><h3 class="is-inline-block"><a href="/about">About</a></h3><h3 class="is-inline-block"><a href="/archives">Archives</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">Dizzy</span></a></li></ol></div><div class="column is-9"><header class="my-4"></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle"></h1><time class="has-text-grey" datetime="2021-08-23T09:44:40.224Z">2021-08-23</time><article class="mt-2 post-content"><h1>Dizzy</h1>
+<p>拿到题目用IDA打开,发现一个超大的main函数</p>
+<p><img src="media/ebf6df32afe64814eb0dc84068b9d4e0.png" alt=""></p>
+<p>代码很乱,先写个idapython脚本优化一下</p>
+<p>将这种</p>
+<p><img src="media/5d1bb7a02aed17b924f22b8a5bc04af3.png" alt=""></p>
+<p>还有这种指令全都优化了</p>
+<p><img src="media/576319967abf19bd1157f8b4965c260f.png" alt=""></p>
+<p>都优化成这样子</p>
+<p><img src="media/14d9fe3d97f7d315596993fbfa383389.png" alt=""></p>
+<p>优化之后可读性大大增加</p>
+<p>这里的每一组操作都有个规律</p>
+<p>像这种逻辑的,只有7条指令</p>
+<p><img src="media/9c7bb682a666f2edb48e75cb01e82076.png" alt=""></p>
+<p>而像这种的,只有5条指令</p>
+<p><img src="media/efddd520921ccad8a291f7ffc94ba6d8.png" alt=""></p>
+<p>那处理起来就很容易了,先枚举出所有操作块,然后从后往前求逆就行</p>
+<p>我的计算flag方案是idapython生成c代码,复制到c文件里编译执行相应的flag计算代码</p>
+<p>flag: flag{Try_R3vers1ng_W1th_ScR!pt!}</p>
+<p>生成求逆C源码的IDAPYTHON代码:</p>
+<pre><code>import idaapi
+import idautils
+import idc
+
+flog=open('inst.log','a+')
+def loginst(strinst):
+	global flog
+	flog.write(strinst+'\n')
+
+
+def resolve7(inst):
+	idx1=get_operand_value(inst[0],1)
+	idx2=get_operand_value(inst[1],1)
+	op=GetDisasm(inst[4])[0:3]
+	if(op=='sub'):
+		loginst('inp[%d]+=inp[%d];' % (idx1,idx2))
+	if(op=='add'):
+		loginst('inp[%d]-=inp[%d];' % (idx1,idx2))
+	if(op=='xor'):
+		loginst('inp[%d]^=inp[%d];' % (idx1,idx2))
+def resolve5(inst): 
+	idx1=get_operand_value(inst[0],1)
+	val=get_operand_value(inst[2],1)
+	op=GetDisasm(inst[2])[0:3]
+	if(op=='sub'):
+		loginst('inp[%d]+=%d;' % (idx1,val))
+	if(op=='add'):
+		loginst('inp[%d]-=%d;' % (idx1,val))
+	if(op=='xor'):
+		loginst('inp[%d]^=%d;' % (idx1,val))
+def resolveBlock(start):
+	inst_list=[]
+	cur=start
+
+	while True:
+		cur_dis=GetDisasm(cur)
+		if(cur_dis.find('nop')==-1):
+			inst_list.append(cur)
+		if(cur_dis.find('mov     inp')!=-1):
+			cur=next_head(cur)
+			break;
+		cur=next_head(cur)
+	if(len(inst_list)==7):
+		resolve7(inst_list)
+	elif(len(inst_list)==5):
+		resolve5(inst_list)
+	else:
+		print('invaild! %X' % start)
+		exit()
+	return cur
+def walkBlock(start):
+	inst_list=[]
+	cur=start
+
+	while True:
+		cur_dis=GetDisasm(cur)
+		if(cur_dis.find('nop')==-1):
+			inst_list.append(cur)
+		if(cur_dis.find('mov     inp')!=-1):
+			cur=next_head(cur)
+			break;
+		cur=next_head(cur)
+	return cur
+addr=0x4011C3         
+block_list=[]
+while(addr!=0x434130):
+	if(addr==0x43306F):
+		addr=0x4330C0
+	block_list.append(addr)
+	addr=walkBlock(addr)
+print(len(block_list))
+i=len(block_list)
+while i!=0:
+	i=i-1
+	resolveBlock(block_list[i])
+flog.close()
+</code></pre>
+<p>C源码太长了就缩略一些</p>
+<pre><code>int main()
+&#123;
+	unsigned char inp[] = &#123; 0x27,0x3C,0xE3,0xFC,0x2E,0x41,0x7,0x5E,0x62,0xCF,0xE8,0xF2,0x92,0x80,0xE2,0x36,0xB4,0xB2,0x67,0x77,0xF,0xF6,0xD,0xB6,0xED,0x1C,0x65,0x8A,0x7,0x53,0xA6,0x66 &#125;;
+//此处省略5000行代码
+printf(&quot;%s\n&quot;, inp);
+&#125;
+</code></pre>
+<p>去混淆代码1:</p>
+<pre><code>import idaapi
+import idautils
+import idc
+from capstone import *
+from pwn import *
+
+def resolveBlock(start):
+	pass
+def PatchByte(addr,Byte):
+	return ida_bytes.patch_byte(addr, Byte)
+def copy_byte(addr,byte):
+	for i in range(0,len(byte)):
+		PatchByte(addr+i,byte[i])
+def nop(addr, size):
+	#print(hex(addr))
+	for i in range(0,int(size)):
+		PatchByte(addr+i, 0x90)
+i=0x4011C3
+while i&lt;=0x434130:
+	next_addr=idaapi.next_head(i,0xF34130)
+	cur_size=next_addr-i
+	next_size=idaapi.next_head(next_addr,0xF34130)-next_addr
+	cur=GetDisasm(i)
+	next=GetDisasm(next_addr)
+	if(cur.find('mov     ')!=-1 and get_operand_value(i,1)==1):
+		if(next.find('imul    ')!=-1):
+			pos=next.find('imul    ')+len('imul    ')
+			reg=next[pos:pos+3]
+			#print(pos,reg)
+			yuju='mov '+reg+','+str(get_operand_value(next_addr,2))
+			#print(yuju)
+			fh=Assemble(i,yuju)
+			if(fh[0]==True):
+				nop(i,cur_size)
+				nop(next_addr,next_size)
+				copy_byte(i,fh[1])
+			else:
+				print('error!\n')
+				exit()
+			
+	
+	i=next_addr
+</code></pre>
+<p>去混淆代码2:</p>
+<pre><code>import idaapi
+import idautils
+import idc
+from capstone import *
+from pwn import *
+
+def resolveBlock(start):
+	pass
+def PatchByte(addr,Byte):
+	return ida_bytes.patch_byte(addr, Byte)
+def copy_byte(addr,byte):
+	for i in range(0,len(byte)):
+		PatchByte(addr+i,byte[i])
+def nop(addr, size):
+	#print(hex(addr))
+	for i in range(0,int(size)):
+		PatchByte(addr+i, 0x90)
+i=0x4011C3
+while i&lt;=0x434130:
+	next_addr=idaapi.next_head(i,0xF34130)
+	cur_size=next_addr-i
+	next_size=idaapi.next_head(next_addr,0xF34130)-next_addr
+	cur=GetDisasm(i)
+	next=GetDisasm(next_addr)
+	if(cur.find('mov     ')!=-1 and get_operand_value(i,1)==1):
+		if(next.find('shl     ')!=-1):
+			pos=next.find('shl     ')+len('shl     ')
+			reg=next[pos:pos+3]
+			#print(pos,reg)
+			yuju='mov '+reg+','+str(1 &lt;&lt; get_operand_value(next_addr,1))
+			print(hex(i),yuju)
+			fh=Assemble(i,yuju)
+			if(fh[0]==True):
+				#pass
+				nop(i,cur_size)
+				nop(next_addr,next_size)
+				copy_byte(i,fh[1])
+			else:
+				print('error!\n')
+				exit()
+			
+	
+	i=next_addr
+</code></pre>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><em></em><a class="button is-default" href="/2021/08/23/%E5%8B%92%E7%B4%A2%E8%A7%A3%E5%AF%86/" title=""><span class="has-text-weight-semibold">Next: </span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><article class="mt-6 comment-container"><script async repo="hu4ji-blog/hu4ji-blog.github.io" src="https://utteranc.es/client.js" issue-term="pathname" theme="preferred-color-scheme"></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/jqj0901"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> Hu4ji 2021</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo</p></div><div><span></span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/post.js"></script></body></html>
