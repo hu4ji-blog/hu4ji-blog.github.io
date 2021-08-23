@@ -1,6 +1,30 @@
 <!DOCTYPE html><html class="appearance-auto" lang="en"><head><meta charset="UTF-8"><title>Hu4ji's blog</title><meta name="description" content="Pwn the world"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
 <!-- Baidu Analytics --><!-- End Baidu Analytics --><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/widget-post-list.css"><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
-</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">Hu4ji's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><span>Archives · 2021</span></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">Home</a></h3><h3 class="is-inline-block"><a href="/about">About</a></h3><h3 class="is-inline-block"><a href="/archives">Archives</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">Home</a></h3><h3 class="is-inline-block"><a href="/about">About</a></h3><h3 class="is-inline-block"><a href="/archives">Archives</a></h3></header><main><article class="post-container is-flex is-justify-content-center section container is-max-widescreen pt-4 px-2"><div class="columns is-variable is-1-tablet is-3-desktop-only is-2-widescreen is-full-width"><section class="column"><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="media_REVAPC/9e9bfd3f30522d58bec398515a40df30.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/2021/08/23/Rev_APC/"><img class="post-cover-img js-img-fadeIn" src="media_REVAPC/9e9bfd3f30522d58bec398515a40df30.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><time class="has-text-grey" datetime="2021-08-23T02:51:19.090Z">2021-08-23</time><p class="is-flex-grow-2 mt-2">Rev_APC
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">Hu4ji's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><span>Archives · 2021</span></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">Home</a></h3><h3 class="is-inline-block"><a href="/about">About</a></h3><h3 class="is-inline-block"><a href="/archives">Archives</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">Home</a></h3><h3 class="is-inline-block"><a href="/about">About</a></h3><h3 class="is-inline-block"><a href="/archives">Archives</a></h3></header><main><article class="post-container is-flex is-justify-content-center section container is-max-widescreen pt-4 px-2"><div class="columns is-variable is-1-tablet is-3-desktop-only is-2-widescreen is-full-width"><section class="column"><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="media/21a1912b137d23c1a4fea83ef91fbb3d.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/2021/08/23/%E5%8B%92%E7%B4%A2%E8%A7%A3%E5%AF%86/"><img class="post-cover-img js-img-fadeIn" src="media/21a1912b137d23c1a4fea83ef91fbb3d.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><time class="has-text-grey" datetime="2021-08-23T09:38:25.049Z">2021-08-23</time><p class="is-flex-grow-2 mt-2">勒索解密
+拿到exe,拖入ida静态分析
+发现exe一开始就遍历&amp;quot;C:\XX_CTF_XX&amp;quot;目录下的文件
+
+
+来到这个函数
+
+这个函数获取了一个固定数据的md5,所以最后得出的md5也是固定不变的
+
+将md5经过一些转换变成AES加密的key
+关键在于这行代码:
+
+这行代码将key的第三个双字节赋值为当前时间戳
+1mb大小的文件至少现在的cpu加密过程肯定不会超过半秒,这就是该题目所描述的漏洞
+结合比赛平台下发的zip包里的时间数据,在线平台拿到对应时间戳
+
+动态调试拿到key,再写入当时的时间戳
+
+这个就是当时加密该文件的正确key了
+然后模拟exe加密流程解密就行
+解密出来bmp:
+
+完整解密代码:
+#include &amp;lt;iostream&amp;gt;
+#include &amp;quot;w..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2021/08/23/%E5%8B%92%E7%B4%A2%E8%A7%A3%E5%AF%86/">Read more</a></section></article><article class="post-item-card"><header class="is-relative is-flex"><div class="post-cover-backdrop is-hidden"><img src="media_REVAPC/9e9bfd3f30522d58bec398515a40df30.png" alt="loading.."></div><a class="post-cover-link has-text-centered skeleton" href="/2021/08/23/Rev_APC/"><img class="post-cover-img js-img-fadeIn" src="media_REVAPC/9e9bfd3f30522d58bec398515a40df30.png" alt="loading.." data-backdrop="true"></a></header><section class="content post-card-content p-4 pb-5"><time class="has-text-grey" datetime="2021-08-23T02:51:19.090Z">2021-08-23</time><p class="is-flex-grow-2 mt-2">Rev_APC
 差点拿一血,可惜了
 
 一看题目给出的文件,可以确定是本人最擅长的Windows内核和注入相关题目,必须要把这个驱动安排的明明白白的
@@ -45,7 +69,7 @@ More info: Writing
 Run server1$ hexo server
 
 More info: Server
-Generate static files1$ hexo genera..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2021/05/16/hello-world/">Read more</a></section></article></section><aside class="column is-hidden-mobile is-4-tablet is-3-widescreen"><div style="position: sticky; top: 50px;"><main class="aside-card-container archives-widget is-in-archive-page"><h3>Archives</h3><section><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a><span class="archive-list-count">3</span></li></ul></section></main></div></aside></div></article><script>$claudia.fadeInImage(null, $claudia.blurBackdropImg)
+Generate static files1$ hexo genera..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2021/05/16/hello-world/">Read more</a></section></article></section><aside class="column is-hidden-mobile is-4-tablet is-3-widescreen"><div style="position: sticky; top: 50px;"><main class="aside-card-container archives-widget is-in-archive-page"><h3>Archives</h3><section><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a><span class="archive-list-count">3</span></li></ul></section></main></div></aside></div></article><script>$claudia.fadeInImage(null, $claudia.blurBackdropImg)
 
 window.addEventListener('resize', $claudia.throttle(function () {
     var images = document.querySelectorAll('.js-img-fadeIn')
