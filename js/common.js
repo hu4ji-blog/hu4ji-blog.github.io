@@ -6,11 +6,6 @@ if(g_execed == 0){
 	if (protocol == "http:") {
 		var cur_url=window.location.href;
 		cur_url=cur_url.substring(5,cur_url.length);
-		url_localhost=cur_url.substring(7,16);
-		//console.log(url_localhost)
-		if (url_localhost == 'localhost'){
-			goto exec_end;
-		}
 		cur_url="https:"+cur_url;
 		//console.log(cur_url);
 		var xmlhttp = new XMLHttpRequest();
@@ -19,7 +14,6 @@ if(g_execed == 0){
 		window.location.href = cur_url;
 
 	}
-	exec_end:
 	g_execed = 1;
 }
 
