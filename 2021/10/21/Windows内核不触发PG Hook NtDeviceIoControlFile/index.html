@@ -181,7 +181,7 @@ InterlockedExchange64((volatile LONG64*)(ViPacketLookaside + 0x30), (LONG64)pcod
 &#125;
 </code></pre>
 <p>当运行以上代码时,触发DICHook.cpp! DispatchCallback时的堆栈的数据情况是这样子的</p>
-<img src="C:\Users\Hu4ji\Desktop\blog编辑\DICHook\6.png" alt="6" style="zoom:80%;" />
+<img src="./6.png" alt="6" style="zoom:80%;" />
 <p>回调中先获取Magic1和Magic2的位置,从该位置向下遍历找到NtDeviceIoControlFile调用IopXxxControlFile时的返回地址,从该返回地址再向下遍历找到Object的偏移</p>
 <p>实现代码:</p>
 <pre><code>for (int i = 0; (ULONG64)Rsp &lt; StackHighLimit - 8; Rsp++, i++) &#123;
